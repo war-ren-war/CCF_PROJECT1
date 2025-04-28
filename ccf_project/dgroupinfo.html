@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dgroup Directory</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      background: url('background.jpg') no-repeat center center/cover;
+    }
+    .container {
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      color: white;
+      overflow-y: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    .filters input,
+    .filters select {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      width: 100%;
+      max-width: 250px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+    th {
+      background-color: rgba(0, 150, 136, 0.8);
+    }
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    button {
+      padding: 5px 10px;
+      background-color: #009688;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00796b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Small Group Directory</h2>
+
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="Search Dgroup or Leader..." onkeyup="filterTable()" />
+      <select id="locationFilter" onchange="filterTable()">
+        <option value="">All Locations</option>
+        <option value="Pasig City">Pasig City</option>
+        <option value="Taguig">Taguig</option>
+        <option value="Online">Online</option>
+        <option value="Makati">Makati</option>
+        <option value="Quezon City">Quezon City</option>
+      </select>
+      <select id="typeFilter" onchange="filterTable()">
+        <option value="">All Group Types</option>
+        <option value="Couples">Couples</option>
+        <option value="Youth">Youth</option>
+        <option value="Men">Men</option>
+        <option value="Women">Women</option>
+      </select>
+      <select id="stageFilter" onchange="filterTable()">
+        <option value="">All Life Stages</option>
+        <option value="Singles">Singles</option>
+        <option value="Young Adults">Young Adults</option>
+        <option value="Parents">Parents</option>
+      </select>
+    </div>
+
+    <table id="dgroupTable">
+      <thead>
+        <tr>
+          <th>Name of Dgroup</th>
+          <th>Dgroup Leader</th>
+          <th>Time & Availability</th>
+          <th>Location</th>
+          <th>Group Type</th>
+          <th>Life Stage</th>
+          <th>Members</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Faith Builders</td><td>John Cruz</td><td>Fridays, 7:00 PM</td><td>Pasig City</td><td>Men</td><td>Young Adults</td><td>8</td><td><button onclick="editRow(this)">Edit</button><button onclick="deleteRow(this)">Delete</button></td></tr>
+        <tr><td>Grace Seekers</td><td>Ana Santos</td><td>Saturdays, 3:00 PM</td><td>Online</td><td>Women</td><td>Singles</td><td>10</td><td><button onclick="editRow(this)">Edit</button><button onclick="deleteRow(this)">Delete</button></td></tr>
+        <tr><td>Truth Warriors</td><td>Mark Dela Rosa</td><td>Sundays, 5:00 PM</td><td>Taguig</td><td>Youth</td><td>Singles</td><td>12</td><td><button onclick="editRow(this)">Edit</button><button onclick="deleteRow(this)">Delete</button></td></tr>
+        <tr><td>Light Bearers</td><td>Maria Lopez</td><td>Thursdays, 8:00 PM</td><td>Pasig City</td><td>Women</td><td>Parents</td><td>6</td><td><button onclick="editRow(this)">Edit</button><button onclick="deleteRow(this)">Delete</button></td></tr>
+        <tr><td>Hope Anchors</td><td>David Reyes</td><td>Mondays, 6:30 PM</td><td>Makati</td><td>Couples</td><td>Parents</td><td>4</td><td><button onclick="editRow(this)">Edit</button><button onclick="deleteRow(this)">Delete</button></td></tr>
+        <tr><td>Kingdom Builders</td><td>Joy Garcia</td><td>Wednesdays, 7:00 PM</td><td>Quezon City</td><td>Couples</td><td>Young Adults</td><td>9</td><td><button onclick="editRow(this)">Edit</button><button onclick="deleteRow(this)">Delete</button></td></tr>
+        <tr><td>Faithful Servants</td><td>Paul Mendoza</td><td>Tuesdays, 8:00 PM</td><td>Online</td><td>Men</td><td>Singles</td><td>11</td><td><button onclick="editRow(this)">Edit</button><button onclick="deleteRow(this)">Delete</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Filter Table
+    function filterTable() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const location = document.getElementById('locationFilter').value;
+      const type = document.getElementById('typeFilter').value;
+      const stage = document.getElementById('stageFilter').value;
+      const table = document.getElementById('dgroupTable');
+      const rows = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        const nameMatch = cells[0].textContent.toLowerCase().includes(input);
+        const leaderMatch = cells[1].textContent.toLowerCase().includes(input);
+        const locationMatch = !location || cells[3].textContent === location;
+        const typeMatch = !type || cells[4].textContent === type;
+        const stageMatch = !stage || cells[5].textContent === stage;
+
+        if ((nameMatch || leaderMatch) && locationMatch && typeMatch && stageMatch) {
+          rows[i].style.display = '';
+        } else {
+          rows[i].style.display = 'none';
+        }
+      }
+    }
+
+    // Edit Row
+    function editRow(button) {
+      const row = button.closest('tr');
+      const cells = row.getElementsByTagName('td');
+
+      // Populate the row data into a form or prompt (you can modify this as needed)
+      const newName = prompt('Edit Name of Dgroup:', cells[0].textContent);
+      const newLeader = prompt('Edit Dgroup Leader:', cells[1].textContent);
+      const newTime = prompt('Edit Time & Availability:', cells[2].textContent);
+      const newLocation = prompt('Edit Location:', cells[3].textContent);
+      const newType = prompt('Edit Group Type:', cells[4].textContent);
+      const newStage = prompt('Edit Life Stage:', cells[5].textContent);
+      const newMembers = prompt('Edit Members Count:', cells[6].textContent);
+
+      // Update row data if valid inputs
+      if (newName && newLeader && newTime && newLocation && newType && newStage && newMembers) {
+        cells[0].textContent = newName;
+        cells[1].textContent = newLeader;
+        cells[2].textContent = newTime;
+        cells[3].textContent = newLocation;
+        cells[4].textContent = newType;
+        cells[5].textContent = newStage;
+        cells[6].textContent = newMembers;
+      }
+    }
+
+    // Delete Row
+    function deleteRow(button) {
+      const row = button.closest('tr');
+      row.remove();
+    }
+  </script>
+
+</body>
+</html>
